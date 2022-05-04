@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useState } from "react/cjs/react.development";
+import React, { useEffect, useState } from "react";
 import { getEvents } from "./EventManager";
+
 export const EventList = (props) => {
   const [events, setEvents] = useState([]);
 
@@ -17,9 +17,11 @@ export const EventList = (props) => {
               Come out and Join the Fun on {event.date} at {event.time}
             </div>
             <div className="event__description_game">
-              {event.description} and play {event.game}
+              {event.description} and play {event.game.title}
             </div>
-            <div className="event__organizer">Hosted by {event.organizer}</div>
+            <div className="event__organizer">
+              Hosted by {event.organizer.id}
+            </div>
           </section>
         );
       })}
