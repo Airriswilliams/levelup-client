@@ -23,6 +23,11 @@ export const GameForm = () => {
     getGameTypes().then((data) => setGameTypes(data));
   }, []);
 
+  // Object.assign copies all properties from one source object to a target object and returns the modified target object.
+  // Object.assign adds new properties to an existing object
+  // A way to do a shallow copy of an Object or merge multiple objects
+  // Object.assign({}, currentGame)...we have an empty object{}, then anything we place after the empty Object, the
+  // properties and values from "currentGame" are going to be put inside the empty Object{}
   const changeGameState = (domEvent) => {
     const newGame = Object.assign({}, currentGame);
     newGame[domEvent.target.name] = domEvent.target.value;
