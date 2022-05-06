@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { icons } from "react-icons";
+import { useHistory, Link } from "react-router-dom";
 import { getEvents } from "./EventManager";
+import { FaEdit } from "react-icons/fa";
 
 export const EventList = (props) => {
   const [events, setEvents] = useState([]);
@@ -24,17 +26,22 @@ export const EventList = (props) => {
       </header>
       {events.map((event) => {
         return (
-          <section key={`event--${event.id}`} className="event">
-            <div className="event__date_time">
-              Come out and Join the Fun on {event.date} at {event.time}
-            </div>
-            <div className="event__description_game">
-              {event.description} and play {event.game.title}
-            </div>
-            <div className="event__organizer">
-              Hosted by {event.organizer.id}
-            </div>
-          </section>
+          <table key={`event--${event.id}`} className="event">
+            <tr>
+              <td className="event__date_time">
+                Come out and Join the Fun on {event.date} at {event.time}
+              </td>
+              <td className="event__description_game">
+                {event.description} and play {event.game.title}
+              </td>
+              <td className="event__organizer">
+                Hosted by {event.organizer.user.username}
+              </td>
+              <td>
+                <Link to={`/edit/${event.id}`}>Edit</Link>
+              </td>
+            </tr>
+          </table>
         );
       })}
     </article>

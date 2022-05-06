@@ -1,43 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { createGame, getGameTypes } from "./GameManager.js";
+import { useHistory, useParams } from "react-router-dom";
+import { editGame, getGameTypes, getSingleGame } from "./GameManager";
 
-export const GameForm = () => {
+export const GameEdit = () => {
   const history = useHistory();
-  const [gameTypes, setGameTypes] = useState([]);
 
-  /*
-        Since the input fields are bound to the values of
-        the properties of this state variable, you need to
-        provide some default values.
-    */
-  const [currentGame, setCurrentGame] = useState({
-    skill_level: 1,
-    number_of_players: 0,
-    title: "",
-    maker: "",
-    game_type_id: 0,
-  });
+  const [gameTypes, setGameTypes] = useState([]);
+  // get original game with original data
+  const [currentGame, setCurrentGame] = useState({});
+  const gameId = useParams();
+  // get single game
+  useEffect(() => {
+    getSingleGame(gameId.gameId).then((data) => setCurrentGame(data));
+  }, []);
 
   useEffect(() => {
     getGameTypes().then((data) => setGameTypes(data));
   }, []);
 
-  // Object.assign copies all properties from one source object to a target object and returns the modified target object.
-  // Object.assign adds new properties to an existing object
-  // A way to do a shallow copy of an Object or merge multiple objects
-  // Object.assign({}, currentGame)...we have an empty object{}, then anything we place after the empty Object, the
-  // properties and values from "currentGame" are going to be put inside the empty Object{}
   const changeGameState = (domEvent) => {
     const newGame = Object.assign({}, currentGame);
     newGame[domEvent.target.name] = domEvent.target.value;
     setCurrentGame(newGame);
   };
-  // domEvent.target.name is targeting the name on LN's 46, 61 ...etc.
-  // Ln 45 onchange(is a change event) is saying do something, onchange is a listener, you are instructing it to call changeGameState
+
   return (
     <form className="gameForm">
-      <h2 className="gameForm__title">Register New Game</h2>
+      <h2 className="gameForm__title">Edit Game</h2>
       <fieldset>
         <div className="form-group">
           <label htmlFor="title">Title: </label>
@@ -52,7 +41,6 @@ export const GameForm = () => {
           />
         </div>
       </fieldset>
-
       <fieldset>
         <div className="form-group">
           <label htmlFor="maker">Maker: </label>
@@ -79,7 +67,6 @@ export const GameForm = () => {
           />
         </div>
       </fieldset>
-
       <fieldset>
         <div className="form-group">
           <label htmlFor="skill_level">Skill Level: </label>
@@ -93,7 +80,6 @@ export const GameForm = () => {
           />
         </div>
       </fieldset>
-
       <fieldset>
         <div className="form-group">
           <select
@@ -104,8 +90,7 @@ export const GameForm = () => {
             placeholder="Select Game Type..."
             onChange={changeGameState}
           >
-            <option value="0">Choose Type...</option>
-            {gameTypes.map((type, index) => {
+            {gameTypes?.map((type, index) => {
               return (
                 <option key={index} value={type.id} name="game_type_id">
                   {type.label}
@@ -115,7 +100,6 @@ export const GameForm = () => {
           </select>
         </div>
       </fieldset>
-
       <button
         type="submit"
         onClick={(evt) => {
@@ -123,19 +107,20 @@ export const GameForm = () => {
           evt.preventDefault();
 
           const game = {
-            maker: currentGame.maker,
+            id: currentGame.id,
             title: currentGame.title,
+            maker: currentGame.maker,
             number_of_players: parseInt(currentGame.number_of_players),
             skill_level: parseInt(currentGame.skill_level),
-            game_type: parseInt(currentGame.game_type_id),
+            game_type: parseInt(currentGame.game_type.id),
           };
 
           // Send POST request to your API
-          createGame(game).then(() => history.push("/games"));
+          editGame(game).then(() => history.push(`/games`));
         }}
         className="btn btn-primary"
       >
-        Create
+        Save
       </button>
     </form>
   );
