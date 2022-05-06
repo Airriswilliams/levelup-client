@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { icons } from "react-icons";
 import { useHistory, Link } from "react-router-dom";
-import { getEvents } from "./EventManager";
+import { getEvents, deleteEvent } from "./EventManager";
 import { FaEdit } from "react-icons/fa";
 
 export const EventList = (props) => {
@@ -11,6 +11,12 @@ export const EventList = (props) => {
   useEffect(() => {
     getEvents().then((data) => setEvents(data));
   }, []);
+
+  const deleteHandler = (id) => {
+    deleteEvent(id)
+      .then(getEvents)
+      .then((data) => setEvents(data));
+  };
 
   return (
     <article className="events">
@@ -39,6 +45,9 @@ export const EventList = (props) => {
               </td>
               <td>
                 <Link to={`/edit/${event.id}`}>Edit</Link>
+              </td>
+              <td>
+                <button onClick={() => deleteHandler(event.id)}>DELETE</button>
               </td>
             </tr>
           </table>

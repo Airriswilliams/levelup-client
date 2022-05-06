@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
-import { getGames } from "./GameManager.js";
+import { getGames, deleteGame } from "./GameManager.js";
+import { FaEdit } from "react-icons/fa";
 
 export const GameList = (props) => {
   const [games, setGames] = useState([]);
@@ -10,6 +11,12 @@ export const GameList = (props) => {
   useEffect(() => {
     getGames().then((data) => setGames(data));
   }, []);
+
+  const deleteHandler = (id) => {
+    deleteGame(id)
+      .then(getGames)
+      .then((data) => setGames(data));
+  };
 
   return (
     <article className="games">
@@ -43,7 +50,12 @@ export const GameList = (props) => {
                 <td className="game__players">{game.number_of_players}</td>
                 <td className="game__skillLevel">{game.skill_level}</td>
                 <td>
-                  <Link to={`/edit/${game.id}`}>Edit</Link>
+                  <Link to={`/edit/${game.id}`}>
+                    <FaEdit />
+                  </Link>
+                </td>
+                <td>
+                  <button onClick={() => deleteHandler(game.id)}>DELETE</button>
                 </td>
               </tr>
             </tbody>
