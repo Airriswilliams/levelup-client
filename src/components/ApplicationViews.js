@@ -28,7 +28,7 @@ export const ApplicationViews = () => {
           <GameForm />
         </Route>
 
-        <Route exact path="/edit/:gameId(\d+)">
+        <Route exact path="/games/:gameId(\d+)">
           <GameEdit />
         </Route>
 
@@ -40,7 +40,7 @@ export const ApplicationViews = () => {
           <EventForm />
         </Route>
 
-        <Route exact path="/edit/:eventId(\d+)">
+        <Route exact path="/events/:eventId(\d+)">
           <EventEdit />
         </Route>
       </main>

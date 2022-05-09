@@ -50,7 +50,7 @@ export const GameList = (props) => {
                 <td className="game__players">{game.number_of_players}</td>
                 <td className="game__skillLevel">{game.skill_level}</td>
                 <td>
-                  <Link to={`/edit/${game.id}`}>
+                  <Link to={`/games/${game.id}`}>
                     <FaEdit />
                   </Link>
                 </td>

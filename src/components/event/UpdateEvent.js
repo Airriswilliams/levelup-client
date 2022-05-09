@@ -104,7 +104,7 @@ export const EventEdit = () => {
           };
 
           // Send POST request to your API
-          editEvent(event).then(() => history.push("/events"));
+          editEvent(event).then(() => history.push(`/events`));
         }}
         className="btn btn-primary"
       >
